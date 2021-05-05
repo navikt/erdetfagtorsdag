@@ -1,94 +1,111 @@
-export const answerEnum = {
-  YES: "yes",
-  NO: "no",
-  SOON: "soon"
+export const muligeSvar = {
+    JA: "ja",
+    NEI: "nei",
+    SNART: "snart",
+    OVER: "over"
 };
 
-export const isItWeekend = () => {
-  const now = new Date();
+const fagdagSluttTime = 16;
 
-  const weekendTime = {
-    isItWeekend: answerEnum.YES,
-    timeLeft: null
-  };
+export const erDetFagtorsdag = () => {
+    const nå = new Date();
 
-  // Is it saturday or sunday?
-  if (now.getDay() === 6 || now.getDay() === 0) {
-    return weekendTime;
-  }
+    const fagtorsdagTid = {
+        erDetFagtorsdag: muligeSvar.JA,
+        gjenståendeTid: null
+    };
 
-  const deadline = getWeekendStartDay();
-  const sameDay = isSameDay(now, deadline);
+    const deadline = finnFagtorsdagStart();
+    const sammeDag = erSammeDag(nå, deadline);
 
-  if (sameDay && deadline.getTime() <= now.getTime()) {
-    return weekendTime;
-  }
+    const fagdagSlutt = new Date(nå.getFullYear(), nå.getMonth(), nå.getDate(), fagdagSluttTime, 0)
 
-  const timeRemaining = getTimeRemaining(deadline);
+    if (sammeDag && deadline.getTime() <= nå.getTime() && nå.getTime() <= fagdagSlutt.getTime()) {
+        return fagtorsdagTid;
+    }
 
-  if (sumRemaining(timeRemaining) <= 0) {
-    return weekendTime;
-  }
+    const gjenståendeTid = finnGjenståendeTid(deadline);
 
-  weekendTime.timeLeft = timeRemaining;
+    if (sumGjenstående(gjenståendeTid) <= 0) {
+        return fagtorsdagTid;
+    }
 
-  if (sameDay) {
-    weekendTime.isItWeekend = answerEnum.SOON;
-  } else {
-    weekendTime.isItWeekend = answerEnum.NO;
-  }
+    fagtorsdagTid.gjenståendeTid = gjenståendeTid;
 
-  return weekendTime;
+    if (sammeDag) {
+        fagtorsdagTid.erDetFagtorsdag = muligeSvar.SNART;
+    } else if (gjenståendeTid.dager >= 13) {
+        fagtorsdagTid.erDetFagtorsdag = muligeSvar.OVER
+    } else {
+        fagtorsdagTid.erDetFagtorsdag = muligeSvar.NEI;
+    }
+
+    return fagtorsdagTid;
 };
 
-const getWeekendStartDay = (dayOfWeek, hours, minutes) => {
-  if (dayOfWeek === undefined) {
-    dayOfWeek = 5;
-  }
+const finnFagtorsdagStart = (ukedag, timer, minutter) => {
+    if (ukedag === undefined) {
+        ukedag = 4;
+    }
 
-  if (hours === undefined) {
-    hours = 16;
-  }
+    if (timer === undefined) {
+        timer = 12;
+    }
 
-  if (minutes === undefined) {
-    minutes = 0;
-  }
+    if (minutter === undefined) {
+        minutter = 0;
+    }
 
-  const resultDate = new Date();
-  resultDate.setDate(
-    resultDate.getDate() + ((7 + dayOfWeek - resultDate.getDay()) % 7)
-  );
-  resultDate.setHours(hours, minutes, 0, 0);
+    const nå = new Date();
+    const startDato = new Date();
 
-  return resultDate;
+    startDato.setDate(startDato.getDate() + ((7 + ukedag - startDato.getDay()) % 7));
+
+    if (finnUkenummer() % 2 !== 0) {
+        startDato.setDate(startDato.getDate() + 7);
+    } else if (erSammeDag(startDato, nå) && nå.getHours() >= fagdagSluttTime) {
+        startDato.setDate(startDato.getDate() + 14);
+    }
+
+    startDato.setHours(timer, minutter, 0, 0);
+
+    return startDato;
 };
 
-const getTimeRemaining = endTime => {
-  const t = Date.parse(endTime) - new Date();
-  const seconds = Math.floor((t / 1000) % 60);
-  const minutes = Math.floor((t / 1000 / 60) % 60);
-  const hours = Math.floor((t / (1000 * 60 * 60)) % 24);
-  const days = Math.floor(t / (1000 * 60 * 60 * 24));
-  return {
-    days: days,
-    hours: hours,
-    minutes: minutes,
-    seconds: seconds
-  };
+const finnGjenståendeTid = sluttTid => {
+    const t = Date.parse(sluttTid) - new Date();
+    const seconds = Math.floor((t / 1000) % 60);
+    const minutes = Math.floor((t / 1000 / 60) % 60);
+    const hours = Math.floor((t / (1000 * 60 * 60)) % 24);
+    const days = Math.floor(t / (1000 * 60 * 60 * 24));
+    return {
+        dager: days,
+        timer: hours,
+        minutter: minutes,
+        sekunder: seconds
+    };
 };
 
-const isSameDay = (date1, date2) => {
-  return (
-    date1.getDate() === date2.getDate() &&
-    date1.getMonth() === date2.getMonth() &&
-    date1.getFullYear() === date2.getFullYear()
-  );
+const erSammeDag = (date1, date2) => {
+    return (
+        date1.getDate() === date2.getDate() &&
+        date1.getMonth() === date2.getMonth() &&
+        date1.getFullYear() === date2.getFullYear()
+    );
 };
 
-const sumRemaining = timeRemaining =>
-  timeRemaining.seconds +
-  timeRemaining.minutes +
-  timeRemaining.hours +
-  timeRemaining.days;
+const sumGjenstående = gjenståendeTid =>
+    gjenståendeTid.sekunder +
+    gjenståendeTid.minutter +
+    gjenståendeTid.timer +
+    gjenståendeTid.dager;
 
 export const padNumber = number => ("0" + number).slice(-2);
+
+const finnUkenummer = () => {
+    const d = new Date();
+    const dayNum = d.getUTCDay() || 7;
+    d.setUTCDate(d.getUTCDate() + 4 - dayNum);
+    const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+    return Math.ceil((((d - yearStart) / 86400000) + 1) / 7) - 1
+};

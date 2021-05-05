@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import Answer from "./Answer";
-import { answerEnum, isItWeekend } from "./utils/timeUtils";
-import TimeLeft from "./TimeLeft";
+import Svar from "./Svar";
+import { muligeSvar, erDetFagtorsdag } from "./utils/timeUtils";
+import GjenståendeTid from "./GjenståendeTid";
 import ConfettiGenerator from "confetti-js";
 
 const confettiSettings = {
@@ -20,11 +20,11 @@ const confettiSettings = {
 };
 
 const App = () => {
-  const [answer, setAnswer] = useState(isItWeekend());
+  const [svar, setSvar] = useState(erDetFagtorsdag());
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setAnswer(isItWeekend());
+      setSvar(erDetFagtorsdag());
     }, 1000);
     return () => clearInterval(interval);
   }, []);
@@ -36,18 +36,18 @@ const App = () => {
     return () => confetti.clear();
   }, []);
 
-  const confettiVisible =
-    answer.isItWeekend !== answerEnum.YES ? "hiddenConfetti" : "";
+  const confettiErSynlig =
+    svar.erDetFagtorsdag !== muligeSvar.JA ? "hiddenConfetti" : "";
 
   return (
     <div className="App">
       <canvas
-        className={"confettiHolder " + confettiVisible}
+        className={"confettiHolder " + confettiErSynlig}
         id="confetti-holder"
       />
       <header className="App-header">
-        <Answer isItWeekend={answer.isItWeekend} />
-        <TimeLeft answer={answer} />
+        <Svar erDetFagtorsdag={svar.erDetFagtorsdag} />
+        <GjenståendeTid svar={svar} />
       </header>
     </div>
   );

@@ -1,33 +1,33 @@
 import React from "react";
-import { answerEnum, padNumber } from "./utils/timeUtils";
+import {muligeSvar, padNumber} from "./utils/timeUtils";
 import CountdownLabel from "./CountdownLabel";
-import {text} from "./utils/text";
+import {tekst} from "./utils/tekst";
 
-const Countdown = ({ answer }) => {
-  if (answer.isItWeekend === answerEnum.YES) {
-    return null;
-  }
+const Countdown = ({svar}) => {
+    if (svar.erDetFagtorsdag === muligeSvar.JA) {
+        return null;
+    }
 
-  return (
-    <div className="countdown">
-      {answer.timeLeft.days > 0 && (
-        <CountdownLabel timeLeft={answer.timeLeft.days} label={text.days} />
-      )}
+    return (
+        <div className="countdown">
+            {svar.gjenståendeTid.dager > 0 && (
+                <CountdownLabel gjenståendeTid={svar.gjenståendeTid.dager} label={tekst.dager}/>
+            )}
 
-      <CountdownLabel
-        timeLeft={padNumber(answer.timeLeft.hours)}
-        label={text.hours}
-      />
-      <CountdownLabel
-        timeLeft={padNumber(answer.timeLeft.minutes)}
-        label={text.minutes}
-      />
-      <CountdownLabel
-        timeLeft={padNumber(answer.timeLeft.seconds)}
-        label={text.seconds}
-      />
-    </div>
-  );
+            <CountdownLabel
+                gjenståendeTid={padNumber(svar.gjenståendeTid.timer)}
+                label={tekst.timer}
+            />
+            <CountdownLabel
+                gjenståendeTid={padNumber(svar.gjenståendeTid.minutter)}
+                label={tekst.minutter}
+            />
+            <CountdownLabel
+                gjenståendeTid={padNumber(svar.gjenståendeTid.sekunder)}
+                label={tekst.sekunder}
+            />
+        </div>
+    );
 };
 
 export default Countdown;

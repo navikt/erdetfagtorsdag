@@ -1,6 +1,6 @@
 body {
   margin: 0;
-  background-color: #363648;
+  background-color: #32414f;
   font-family: "Open Sans", sans-serif;
 }
 
@@ -53,7 +53,7 @@ h1 {
 
 h3 {
   white-space: nowrap;
-  color: #cec8ca;
+  color: #e8e5e7;
   align-self: center;
   margin: 0 4rem;
   font-size: 1.2rem;
@@ -75,7 +75,7 @@ h3 {
 }
 
 .clock-label {
-  color: #cec8ca;
+  color: #e8e5e7;
   padding: 2px 15px;
   border-radius: 3px;
   display: inline-block;
