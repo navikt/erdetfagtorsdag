@@ -8,7 +8,7 @@ export const tekst = {
   snartPre: "Det er bare",
   snartPost: "igjen til fagtorsdag!",
   overPre: "Nå må du vente",
-  overPost: "til neste gang :(",
+  overPost: "til neste gang 🥲",
   dager: "Dager",
   timer: "Timer",
   minutter: "Minutter",
