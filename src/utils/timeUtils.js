@@ -1,3 +1,5 @@
+import moment from "moment";
+
 export const muligeSvar = {
     JA: "ja",
     NEI: "nei",
@@ -61,7 +63,7 @@ const finnFagtorsdagStart = (ukedag, timer, minutter) => {
 
     startDato.setDate(startDato.getDate() + ((7 + ukedag - startDato.getDay()) % 7));
 
-    if (finnUkenummer() % 2 !== 0) {
+    if (moment().isoWeek() % 2 !== 0) {
         startDato.setDate(startDato.getDate() + 7);
     } else if (erSammeDag(startDato, nå) && nå.getHours() >= fagdagSluttTime) {
         startDato.setDate(startDato.getDate() + 14);
@@ -101,11 +103,3 @@ const sumGjenstående = gjenståendeTid =>
     gjenståendeTid.dager;
 
 export const padNumber = number => ("0" + number).slice(-2);
-
-const finnUkenummer = () => {
-    const d = new Date();
-    const dayNum = d.getUTCDay() || 7;
-    d.setUTCDate(d.getUTCDate() + 4 - dayNum);
-    const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
-    return Math.ceil((((d - yearStart) / 86400000) + 1) / 7) - 1
-};
