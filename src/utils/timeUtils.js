@@ -36,7 +36,7 @@ export const erDetFagtorsdag = () => {
 
     if (sammeDag) {
         fagtorsdagTid.erDetFagtorsdag = muligeSvar.SNART;
-    } else if (gjenståendeTid.dager >= 13) {
+    } else if (gjenståendeTid.dager >= 13 && gjenståendeTid.timer >= 12) {
         fagtorsdagTid.erDetFagtorsdag = muligeSvar.OVER
     } else {
         fagtorsdagTid.erDetFagtorsdag = muligeSvar.NEI;
@@ -63,7 +63,7 @@ const finnFagtorsdagStart = (ukedag, timer, minutter) => {
 
     startDato.setDate(startDato.getDate() + ((7 + ukedag - startDato.getDay()) % 7));
 
-    if (moment().isoWeek() % 2 !== 0) {
+    if (moment(startDato).isoWeek() % 2 !== 0) {
         startDato.setDate(startDato.getDate() + 7);
     } else if (erSammeDag(startDato, nå) && nå.getHours() >= fagdagSluttTime) {
         startDato.setDate(startDato.getDate() + 14);
