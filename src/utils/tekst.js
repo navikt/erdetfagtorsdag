@@ -12,5 +12,5 @@ export const tekst = {
   dager: "Dager",
   timer: "Timer",
   minutter: "Minutter",
-  sekunder: "Sekunder"
+  sekunder: "Sekunder",
 };

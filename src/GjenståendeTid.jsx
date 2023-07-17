@@ -1,6 +1,6 @@
 import React from "react";
 import { muligeSvar } from "./utils/timeUtils";
-import {tekst} from "./utils/tekst";
+import { tekst } from "./utils/tekst";
 import Countdown from "./Countdown";
 
 const GjenståendeTid = ({ svar }) => {
@@ -13,7 +13,7 @@ const GjenståendeTid = ({ svar }) => {
   );
 };
 
-const svarPreTekst = erDetFagtorsdag => {
+const svarPreTekst = (erDetFagtorsdag) => {
   switch (erDetFagtorsdag) {
     case muligeSvar.NEI:
       return <h3>{tekst.neiPre}</h3>;
@@ -28,7 +28,7 @@ const svarPreTekst = erDetFagtorsdag => {
   }
 };
 
-const svarPostTekst = erDetFagtorsdag => {
+const svarPostTekst = (erDetFagtorsdag) => {
   switch (erDetFagtorsdag) {
     case muligeSvar.NEI:
       return <h3>{tekst.neiPost}</h3>;

@@ -13,10 +13,10 @@ const confettiSettings = {
     [165, 104, 246],
     [230, 61, 135],
     [0, 199, 228],
-    [253, 214, 126]
+    [253, 214, 126],
   ],
   clock: "30",
-  rotate: true
+  rotate: true,
 };
 
 const App = () => {
