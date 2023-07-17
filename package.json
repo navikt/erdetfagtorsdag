@@ -15,7 +15,8 @@
     "build": "vite build",
     "serve": "vite preview",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist"
+    "deploy": "gh-pages -d dist",
+    "prepare": "husky install"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -35,7 +36,12 @@
   "devDependencies": {
     "@vitejs/plugin-react": "4.0.3",
     "gh-pages": "^4.0.0",
+    "husky": "8.0.3",
+    "lint-staged": "13.2.3",
     "prettier": "3.0.0",
     "vite": "4.4.4"
+  },
+  "lint-staged": {
+    "*.{js,jsx,css,md,html,json}": "prettier --write"
   }
 }
