@@ -17,7 +17,7 @@ export const erDetFagtorsdag = () => {
         gjenståendeTid: null
     };
 
-    const deadline = finnFagtorsdagStart();
+    const deadline = finnFagtorsdagStart(nå);
     const sammeDag = erSammeDag(nå, deadline);
 
     const fagdagSlutt = new Date(nå.getFullYear(), nå.getMonth(), nå.getDate(), fagdagSluttTime, 0)
@@ -26,7 +26,7 @@ export const erDetFagtorsdag = () => {
         return fagtorsdagTid;
     }
 
-    const gjenståendeTid = finnGjenståendeTid(deadline);
+    const gjenståendeTid = finnGjenståendeTid(nå, deadline);
 
     if (sumGjenstående(gjenståendeTid) <= 0) {
         return fagtorsdagTid;
@@ -45,7 +45,7 @@ export const erDetFagtorsdag = () => {
     return fagtorsdagTid;
 };
 
-const finnFagtorsdagStart = (ukedag, timer, minutter) => {
+const finnFagtorsdagStart = (nå, ukedag, timer, minutter) => {
     if (ukedag === undefined) {
         ukedag = 4;
     }
@@ -58,8 +58,7 @@ const finnFagtorsdagStart = (ukedag, timer, minutter) => {
         minutter = 0;
     }
 
-    const nå = new Date();
-    const startDato = new Date();
+    const startDato = new Date(nå);
 
     startDato.setDate(startDato.getDate() + ((7 + ukedag - startDato.getDay()) % 7));
 
@@ -74,8 +73,8 @@ const finnFagtorsdagStart = (ukedag, timer, minutter) => {
     return startDato;
 };
 
-const finnGjenståendeTid = sluttTid => {
-    const t = Date.parse(sluttTid) - new Date();
+const finnGjenståendeTid = (nå, sluttTid) => {
+    const t = Date.parse(sluttTid) - nå;
     const seconds = Math.floor((t / 1000) % 60);
     const minutes = Math.floor((t / 1000 / 60) % 60);
     const hours = Math.floor((t / (1000 * 60 * 60)) % 24);
